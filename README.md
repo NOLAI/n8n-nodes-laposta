@@ -1,6 +1,8 @@
 # n8n-nodes-laposta
 
-This is an n8n community node. It lets you use GitHub Issues in your n8n workflows.
+This is an n8n community node. It lets you use Laposta email marketing and newsletter management in your n8n workflows.
+
+[Laposta](https://www.laposta.nl/) is a Dutch email marketing platform that helps you manage newsletter subscribers, campaigns, and email automation.
 
 [n8n](https://n8n.io/) is a [fair-code licensed](https://docs.n8n.io/sustainable-use-license/) workflow automation platform.
 
@@ -8,66 +10,109 @@ This is an n8n community node. It lets you use GitHub Issues in your n8n workflo
 [Operations](#operations)
 [Credentials](#credentials)
 [Compatibility](#compatibility)
-[Usage](#usage)
+[Use Cases](#use-cases)
 [Resources](#resources)
 
 ## Installation
 
 Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes/installation/) in the n8n community nodes documentation.
 
+Install from the n8n Community Nodes menu using the package name: `n8n-nodes-laposta`
+
 ## Operations
 
-- Issues
-    - Get an issue
-    - Get many issues in a repository
-    - Create a new issue
-- Issue Comments
-    - Get many issue comments
+This node provides comprehensive access to the Laposta API:
+
+### Members
+- **Create/Upsert** - Add or update a subscriber in a list
+- **Update** - Update subscriber information
+- **Get** - Retrieve a specific subscriber
+- **Get Many** - List all subscribers in a list
+- **Delete** - Remove a subscriber
+
+### Lists
+- **Create** - Create a new mailing list
+- **Get** - Get details of a specific list
+- **Get Many** - Retrieve all your mailing lists
+- **Update** - Update list properties
+- **Delete** - Delete a mailing list
+- **Empty** - Remove all active members from a list
+
+### Fields
+- **Create** - Add a custom field to a list
+- **Get** - Get details of a specific field
+- **Get Many** - Retrieve all fields of a list
+- **Update** - Update field properties
+- **Delete** - Remove a field
+
+### Segments
+- **Create** - Create a segment for targeted campaigns
+- **Get** - Get details of a specific segment
+- **Get Many** - Retrieve all segments of a list
+- **Update** - Update segment properties
+- **Delete** - Remove a segment
+
+### Campaigns
+- **Create** - Create a new email campaign
+- **Get** - Get campaign details
+- **Get Many** - List all campaigns
+- **Update** - Update campaign properties
+- **Delete** - Delete a campaign
+- **Get Content** - Retrieve campaign HTML/text content
+- **Set Content** - Update campaign content
+- **Send** - Send campaign immediately
+- **Schedule** - Schedule campaign for later delivery
+- **Send Test** - Send a test email
 
 ## Credentials
 
-You can use either access token or OAuth2 to use this node.
+You'll need a Laposta API key to use this node.
 
-### Access token
+### Getting your API Key
 
-1. Open your GitHub profile [Settings](https://github.com/settings/profile).
-2. In the left navigation, select [Developer settings](https://github.com/settings/apps).
-3. In the left navigation, under Personal access tokens, select Tokens (classic).
-4. Select Generate new token > Generate new token (classic).
-5. Enter a descriptive name for your token in the Note field, like n8n integration.
-6. Select the Expiration you'd like for the token, or select No expiration.
-7. Select Scopes for your token. For most of the n8n GitHub nodes, add the `repo` scope.
-    - A token without assigned scopes can only access public information.
-8. Select Generate token.
-9. Copy the token.
+1. Log in to your [Laposta account](https://app.laposta.nl/)
+2. Navigate to **Toegang & Abonnement** (Access & Subscription)
+3. Select **Koppelingen - API** (Integrations - API)
+4. Copy your API key
+5. In n8n, create a new **Laposta API** credential
+6. Paste your API key
 
-Refer to [Creating a personal access token (classic)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic) for more information. Refer to Scopes for OAuth apps for more information on GitHub scopes.
-
-![Generated Access token in GitHub](https://docs.github.com/assets/cb-17251/mw-1440/images/help/settings/personal-access-tokens.webp)
-
-### OAuth2
-
-If you're self-hosting n8n, create a new GitHub [OAuth app](https://docs.github.com/en/apps/oauth-apps):
-
-1. Open your GitHub profile [Settings](https://github.com/settings/profile).
-2. In the left navigation, select [Developer settings](https://github.com/settings/apps).
-3. In the left navigation, select OAuth apps.
-4. Select New OAuth App.
-    - If you haven't created an app before, you may see Register a new application instead. Select it.
-5. Enter an Application name, like n8n integration.
-6. Enter the Homepage URL for your app's website.
-7. If you'd like, add the optional Application description, which GitHub displays to end-users.
-8. From n8n, copy the OAuth Redirect URL and paste it into the GitHub Authorization callback URL.
-9. Select Register application.
-10. Copy the Client ID and Client Secret this generates and add them to your n8n credential.
-
-Refer to the [GitHub Authorizing OAuth apps documentation](https://docs.github.com/en/apps/oauth-apps/using-oauth-apps/authorizing-oauth-apps) for more information on the authorization process.
+The API key uses HTTP Basic Authentication with the key as the username and an empty password.
 
 ## Compatibility
 
 Compatible with n8n@1.60.0 or later
 
+## Use Cases
+
+### CRM to Newsletter Sync
+Automatically add new customers from your CRM to your Laposta newsletter list when they opt in.
+
+### E-commerce Integration
+Sync WooCommerce or Shopify customers to specific segments based on purchase history or product interests.
+
+### Event Registration
+Add event registrants to a mailing list with custom fields for event details and preferences.
+
+### Automated Campaigns
+Create workflows that automatically send targeted campaigns based on user behavior or data changes.
+
+### Multi-system Sync
+Keep subscriber data synchronized between Laposta and other platforms like Salesforce, HubSpot, or custom databases.
+
+### Lead Scoring
+Update custom fields in Laposta based on user engagement tracked in other systems.
+
 ## Resources
 
 * [n8n community nodes documentation](https://docs.n8n.io/integrations/#community-nodes)
-* [GitHub API docs](https://docs.github.com/en/rest/issues)
+* [Laposta API documentation](https://api.laposta.nl/)
+* [Laposta website](https://www.laposta.nl/)
+
+## License
+
+[MIT](LICENSE)
+
+## Author
+
+Julian van der Horst - [julianvanderhorst@pm.me](mailto:julianvanderhorst@pm.me)
