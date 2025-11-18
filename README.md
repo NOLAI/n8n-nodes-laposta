@@ -17,7 +17,21 @@ This is an n8n community node. It lets you use Laposta email marketing and newsl
 
 Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes/installation/) in the n8n community nodes documentation.
 
-Install from the n8n Community Nodes menu using the package name: `n8n-nodes-laposta`
+### From n8n Community Nodes
+
+Install directly in n8n by navigating to **Settings > Community Nodes** and searching for:
+
+```
+n8n-nodes-laposta
+```
+
+### From npm
+
+```bash
+npm install n8n-nodes-laposta
+```
+
+The package is published on npm and hosted on GitHub under the [NOLAI organization](https://github.com/NOLAI/n8n-nodes-laposta).
 
 ## Operations
 
@@ -105,6 +119,8 @@ Update custom fields in Laposta based on user engagement tracked in other system
 
 ## Resources
 
+* [npm package](https://www.npmjs.com/package/n8n-nodes-laposta)
+* [GitHub repository](https://github.com/NOLAI/n8n-nodes-laposta)
 * [n8n community nodes documentation](https://docs.n8n.io/integrations/#community-nodes)
 * [Laposta API documentation](https://api.laposta.nl/)
 * [Laposta website](https://www.laposta.nl/)
