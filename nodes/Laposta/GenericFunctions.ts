@@ -8,6 +8,41 @@ import type {
 } from 'n8n-workflow';
 import { NodeApiError } from 'n8n-workflow';
 
+/**
+ * Flatten nested objects for form-urlencoded format
+ * Converts { custom_fields: { name: "John" } } to { "custom_fields[name]": "John" }
+ */
+function flattenObjectForForm(obj: IDataObject, parentKey = ''): IDataObject {
+	const result: IDataObject = {};
+
+	for (const key of Object.keys(obj)) {
+		const value = obj[key];
+		const newKey = parentKey ? `${parentKey}[${key}]` : key;
+
+		if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
+			// Recursively flatten nested objects
+			Object.assign(result, flattenObjectForForm(value as IDataObject, newKey));
+		} else if (Array.isArray(value)) {
+			// Handle arrays (e.g., for multi-select fields)
+			for (const item of value) {
+				if (typeof item === 'object') {
+					Object.assign(result, flattenObjectForForm(item as IDataObject, `${newKey}[]`));
+				} else {
+					// For simple arrays, use [] notation
+					if (!result[`${newKey}[]`]) {
+						result[`${newKey}[]`] = [];
+					}
+					(result[`${newKey}[]`] as unknown[]).push(item);
+				}
+			}
+		} else {
+			result[newKey] = value;
+		}
+	}
+
+	return result;
+}
+
 export async function lapostaApiRequest(
 	this: IHookFunctions | IExecuteFunctions | ILoadOptionsFunctions,
 	method: IHttpRequestMethods,
@@ -15,15 +50,21 @@ export async function lapostaApiRequest(
 	body: IDataObject = {},
 	qs: IDataObject = {},
 ): Promise<IDataObject> {
+	// Flatten nested objects for form-urlencoded format
+	// Laposta API expects: custom_fields[name]=value, not JSON
+	const flattenedBody = Object.keys(body).length > 0 ? flattenObjectForForm(body) : {};
+
 	const options: IHttpRequestOptions = {
 		method,
-		body,
+		body: flattenedBody,
 		qs,
 		url: `https://api.laposta.nl/v2${endpoint}`,
-		json: true,
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+		},
 	};
 
-	if (Object.keys(body).length === 0) {
+	if (Object.keys(flattenedBody).length === 0) {
 		delete options.body;
 	}
 
