@@ -1,6 +1,6 @@
 {
     "name": "n8n-nodes-laposta",
-    "version": "0.1.4",
+    "version": "0.1.3",
     "description": "n8n node for Laposta API - email marketing and newsletter management",
     "license": "MIT",
     "homepage": "",
