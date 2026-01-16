@@ -8,6 +8,26 @@ import type {
 } from 'n8n-workflow';
 import { NodeApiError } from 'n8n-workflow';
 
+/**
+ * Convert nested objects to bracket notation for form encoding
+ * e.g., { custom_fields: { name: 'value' } } → { 'custom_fields[name]': 'value' }
+ */
+export function toBracketNotation(obj: IDataObject, prefix = ''): IDataObject {
+	const result: IDataObject = {};
+
+	for (const [key, value] of Object.entries(obj)) {
+		const newKey = prefix ? `${prefix}[${key}]` : key;
+
+		if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
+			Object.assign(result, toBracketNotation(value as IDataObject, newKey));
+		} else {
+			result[newKey] = value;
+		}
+	}
+
+	return result;
+}
+
 export async function lapostaApiRequest(
 	this: IHookFunctions | IExecuteFunctions | ILoadOptionsFunctions,
 	method: IHttpRequestMethods,
@@ -17,14 +37,15 @@ export async function lapostaApiRequest(
 ): Promise<IDataObject> {
 	const options: IHttpRequestOptions = {
 		method,
-		body,
 		qs,
 		url: `https://api.laposta.nl/v2${endpoint}`,
 		json: true,
 	};
 
-	if (Object.keys(body).length === 0) {
-		delete options.body;
+	if (Object.keys(body).length > 0) {
+		// Convert to bracket notation and use form encoding
+		options.body = toBracketNotation(body);
+		options.headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
 	}
 
 	if (Object.keys(qs).length === 0) {
